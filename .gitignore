@@ -9,3 +9,22 @@ exports/
 
 .DS_Store
 node_modules/
+
+# Local deployment credentials and settings
+.env
+.env.*
+!.env.example
+
+# Additional SQLite filenames, journals, and local logs
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+*.db-journal
+*.log
+console-logs/
+
+# Local review notes, kept out of the public source release
+PUBLIC_RELEASE_REVIEW.md
