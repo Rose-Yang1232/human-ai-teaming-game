@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qualification Passed</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/onboarding-flow.css">
+    <style>
+        .site-header {
+            background-color: #0064a4;
+            color: #fff;
+            padding: 8px 0;
+        }
+        .site-header .title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        .brand-logo {
+            width: 70px;
+            height: 30px;
+            object-fit: contain;
+        }
+        .pass-page {
+            color: #111827;
+        }
+        .pass-page .flow-card {
+            max-width: 980px;
+        }
+        .sub-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+        .pass-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+    </style>
+</head>
+<body class="pass-page">
+    <header class="site-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-2"><img class="brand-logo" src="../images/purdue_logo.png" alt="Purdue logo"></div>
+                <div class="col-8"><h2 class="title">Qualification</h2></div>
+                <div class="col-2 text-right"><img class="brand-logo" src="../images/purdue_logo.png" alt="Purdue logo"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mt-3">
+        <div class="flow-card">
+            <div class="sub-header">Target Interception Game: Round 1</div>
+            <p class="pass-text">
+                Congratulations! You’ve passed the qualification test of our study! In the next, you will play two target interception games with AI teammates.
+            </p>
+            <p class="pass-text">
+                Whenever you are ready, click the button below to proceed to the first game.
+            </p>
+            <div class="flow-btn-row">
+                <a class="btn btn-primary btn-lg" href="game-main-exp.html?debug=true&collab=1&session=1">Next</a>
+            </div>
+        </div>
+    </main>
+    <script src="../js/api-client.js"></script>
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!--
+game-round1.html
+
+    Author      :   Sheer Karny, Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Main Experiment HTML file.
+
+This file contains all of the task information for the experiment.
+-->
+<html>
+    <head>
+        <!-- //<link rel="stylesheet" href="css/experiment.css"> -->
+        <!--
+            Custom JavaScript - Experiment Page Metadata and Functionality
+        -->
+        <link rel="stylesheet" type="text/css" href="../css/game.css"> 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+        <!-- <link rel="stylesheet" type="text/css" href="css/game-v2.css">  -->
+        <!-- Inline styles moved to external CSS for better organization -->
+         <!-- LoadAI -->
+        <!-- <script src = "js/AIplannerv1.js"></script> -->
+        <!-- <script src = "js/game-main-exp.js"      type="module" ></script> -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+        <script>window.__APP_VERSION__ = Date.now();</script>
+        <script src="../js/api-client.js"></script>
+        <script src="../js/AIplannerv1.5.2.js"></script>
+
+        <script type="module">
+            import("../js/new-interface-all-agents.js?v=" + window.__APP_VERSION__);
+        </script>
+        <!-- <script src = "js/new-interface-v3.js"      type="module" ></script> -->
+        <!-- <script src = "js/firebasepsych1.1.js"   type="module" ></script>
+        <script src = "js/firebaseconfig.js"     type="module"></script> -->
+
+        <!-- <script src="js/survey-usability.js" type="module"></script> -->
+        <link rel="stylesheet" href="../css/survey-workload-only.css">
+        <link rel="stylesheet" href="../css/survey-full.css">
+        <link rel="stylesheet" href="../css/complete.css">
+        <!--
+            Custom JavaScript - Experiment Page Metadata and Functionality
+        -->
+    </head>
+    <body>
+        <div class="container-fluid" id='full-game-container'>
+            <!-- Experimenter controls: hidden from participants; add &admin=true to the URL to show. -->
+            <div id="adminTopBar" hidden>
+                <div id="aiModeControl">
+                    <div class="controlRow">
+                        <label for="constraintSelect">Constraint</label>
+                        <select id="constraintSelect">
+                            <option value="may-harm">May Harm (Squares OK)</option>
+                            <option value="no-harm">No Harm (No Squares)</option>
+                        </select>
+                    </div>
+                    <div class="controlRow">
+                        <label for="objectiveSelect">Objective</label>
+                        <select id="objectiveSelect">
+                            <option value="self-urgency-bonus">Self Score: Urgency + Bonus</option>
+                            <option value="team">Team Score</option>
+                        </select>
+                    </div>
+                    <div class="controlRow">
+                        <label for="awarenessSelect">Awareness</label>
+                        <select id="awarenessSelect">
+                            <option value="oblivious">Human-Oblivious</option>
+                            <option value="coordinating">Coordinating (Avoid Region + Human's Pick)</option>
+                        </select>
+                    </div>
+                    <div class="controlRow">
+                        <label for="humanBonusSelect">Human Bonus</label>
+                        <select id="humanBonusSelect">
+                            <option value="1">+1</option>
+                            <option value="2">+2</option>
+                            <option value="3">+3</option>
+                        </select>
+                    </div>
+                    <div class="controlRow">
+                        <label for="aiBonusSelect">AI Bonus</label>
+                        <select id="aiBonusSelect">
+                            <option value="1">+1</option>
+                            <option value="2">+2</option>
+                            <option value="3">+3</option>
+                        </select>
+                    </div>
+                    <div class="controlRow">
+                        <label for="densityRange">Max Targets</label>
+                        <div class="rangeGroup">
+                            <input id="densityRange" type="range" min="5" max="15" step="5" value="15">
+                            <span id="densityValue">15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="gameLayoutRow">
+                <div id="leftPanel">
+                    <div id="gameContainer">
+                        <canvas id="gameCanvas" width="800" height="800"></canvas>
+                    </div>
+                </div>
+
+                <div id="rightPanel">
+                    <div class="sideCard" id="actionCard">
+                        <div id="leftPanelButtons">
+                            <button id="continueButton" disabled>Start game</button>
+                            <button id="stopButton">Pause game</button>
+                            <button id="replayTutorialButton" type="button">Replay tutorial</button>
+                        </div>
+                        <div class="sideCardTitle">Action panel</div>
+                        <div id="customAlert" class="custom-alert" style="display: none;">
+                            <div class="custom-alert-content">
+                                <p id="customAlertMessage">Your custom message here!</p>
+                                <div id="customAlertButtonRow">
+                                    <button id="customAlertConfirmButton" type="button" style="display:none;">Confirm</button>
+                                    <button id="customAlertCancelButton" type="button" style="display:none;">Cancel</button>
+                                    <button id="customAlertOkButton" type="button">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sideCard" id="scoreRuleCard">
+                        <div class="sideCardTitle">Score Panel</div>
+                        <div id="scoreTextBlock">
+                            <p class="score-line">Team score: <span id="teamScoreValue" class="score-value">0</span> <span class="score-note">(decided by the urgency level of targets that either you or the AI catches)</span></p>
+                            <p class="score-line">Your bonus score: <span id="yourScoreValue" class="score-value">0</span> <span class="score-note">(decided by the number of square targets you catch)</span></p>
+                            <p class="score-line">AI bonus score: <span id="aiScoreValue" class="score-value">0</span> <span class="score-note">(decided by the number of triangles the AI catches)</span></p>
+                        </div>
+                        <div id="aiModeStatus"></div>
+                    </div>
+
+                    <div class="sideCard" id="historyCard">
+                        <div class="sideCardTitle">History panel</div>
+                        <div id="choiceSummary">
+                            <div id="currentSelectionCard"></div>
+                            <div id="choiceSummaryScroll">
+                                <div id="choiceSummaryBody"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- AI COMPARISON ONLY CONTAINER -->
+
+        <div class="col-12 trialbox justify-content-center" id="ai-comparison-container">
+            <div class="row" id="ai-comparison-question-container">
+                <div class="col-12 text-center" id="ai-comparison-task-container">
+                    <h5 class="trial-task trial-question trial-information" id="ai-comparison-task">
+                        Which AI teammate did you prefer playing with?
+                    </h5>
+                </div>
+            </div>
+            <br>
+            <div class="row" id="ai-comparison-button-container">
+                <div class="col-6 text-center">
+                    <!-- <figure style="background-color: #008000;"> -->
+                    <figure>
+                        <img id="ai-1-button" src="../images/simple-robot-line-removebg-preview.png" alt="AI 1" class="robot-button">
+                        <figcaption><strong style="font-size: 1.2em;">AI teammate (green)</strong></figcaption>
+                    </figure>
+                </div>
+                <div class="col-6 text-center">
+                     <!-- <figure style="background-color: #008000;"> -->
+                    <figure>
+                        <img id="ai-2-button" src="../images/simple-robot-line-removebg-preview.png" alt="AI 2" class="robot-button">
+                        <figcaption><strong style="font-size: 1.2em;">AI teammate (purple)</strong></figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="row" id="survey-submit-button-container">
+                <div class="col-12 right-button">
+                    <button class="btn btn-primary" id="survey-complete-button-comparison" disabled>
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+
+        <!--  AI OPEN ENDED FEEDBACK -->
+        <div class="col-12 trialbox justify-content-center" id="ai-open-ended-feedback-container" hidden>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h5 class="trial-task trial-question trial-information">
+                        It is important to us to understand why you chose the AI teammate you preferred. Please provide details about your choice.
+                    </h5>
+                </div>
+                <div class="col-12 text-center">
+                    <textarea id="ai-feedback-text" rows="4" cols="100" placeholder="Place your feedback here."></textarea>
+                </div>
+                <div class="col-12 text-center">
+                    <button class="btn btn-primary" id="submit-feedback-button" disabled>Submit</button>
+                </div>
+            </div>
+        </div>
+        
+    
+         <!-- Full Survey CONTAINER -->
+        <div id="survey-full-container" class="col-12 trialbox justify-content-center">
+            <div class="row" id="survey-question-container">
+                <div class="col-12 text-center" id="survey-task-container">
+                  <h5 class="trial-task trial-question trial-information" id="survey-task">
+                    Please indicate the extent to which you agree or disagree with the following statements. Respond to each statement for both AI teammates:
+                  </h5>
+                  <!-- <div class="scale-description">
+                    <span class="scale-left">Strongly Disagree (1)</span>
+                    <span class="scale-right">Strongly Agree (7)</span>
+                  </div> -->
+                </div>
+            </div>
+
+                    <!-- Simplified Likert Scale Legend -->
+            <div class="row mt-3 mb-4">
+                <div class="col-12">
+                    <div class="likert-legend-simple">
+                        <span class="legend-left">Strongly Disagree</span>
+                        <div class="legend-scale">
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                            <span>6</span>
+                            <span>7</span>
+                        </div>
+                        <span class="legend-right">Strongly Agree</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                    <tr>
+                      <th class="topic-header" rowspan="3">Statement</th>
+                      <th colspan="7">
+                        <figure class="robot-figure">
+                          <img id="agent1-icon" src="../images/simple-robot-line-removebg-preview.png" alt="AI teammate 1" class="robot-icon">
+                          <figcaption id="agent1-caption"><strong>AI teammate (green)</strong></figcaption>
+                          <figcaption><em>From round 1</em></figcaption>
+                        </figure>
+                      </th>
+                      <th class="separator-column" rowspan="3"></th>
+                      <th colspan="7">
+                        <figure class="robot-figure">
+                          <img id="agent2-icon" src="../images/simple-robot-line-removebg-preview.png" alt="AI teammate 2" class="robot-icon">
+                          <figcaption id="agent2-caption"><strong>AI teammate (purple)</strong></figcaption>
+                          <figcaption><em>From round 2</em></figcaption>
+                        </figure>
+                      </th>
+                    </tr>
+                    <tr class="likert-description-row">
+                      <th colspan="7">1 = Strongly Disagree, 7 = Strongly Agree</th>
+                      <th colspan="7">1 = Strongly Disagree, 7 = Strongly Agree</th>
+                    </tr>
+                    <tr class="number-row">
+                      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th>
+                      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th>
+                    </tr>
+                  </thead>
+                  <tr>
+                    <td class="topic">The AI and I were a team.</td>
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q01_agent1" value="1">
+                        <input type="radio" name="q01_agent1" value="2">
+                        <input type="radio" name="q01_agent1" value="3">
+                        <input type="radio" name="q01_agent1" value="4">
+                        <input type="radio" name="q01_agent1" value="5">
+                        <input type="radio" name="q01_agent1" value="6">
+                        <input type="radio" name="q01_agent1" value="7">
+                      </div>
+                    </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
+                    <td colspan="8">
+                      <div class="radio-group">
+                        <input type="radio" name="q01_agent2" value="1">
+                        <input type="radio" name="q01_agent2" value="2">
+                        <input type="radio" name="q01_agent2" value="3">
+                        <input type="radio" name="q01_agent2" value="4">
+                        <input type="radio" name="q01_agent2" value="5">
+                        <input type="radio" name="q01_agent2" value="6">
+                        <input type="radio" name="q01_agent2" value="7">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="topic">The AI was competent.</td>
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q02_agent1" value="1">
+                        <input type="radio" name="q02_agent1" value="2">
+                        <input type="radio" name="q02_agent1" value="3">
+                        <input type="radio" name="q02_agent1" value="4">
+                        <input type="radio" name="q02_agent1" value="5">
+                        <input type="radio" name="q02_agent1" value="6">
+                        <input type="radio" name="q02_agent1" value="7">
+                      </div>
+                    </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q02_agent2" value="1">
+                        <input type="radio" name="q02_agent2" value="2">
+                        <input type="radio" name="q02_agent2" value="3">
+                        <input type="radio" name="q02_agent2" value="4">
+                        <input type="radio" name="q02_agent2" value="5">
+                        <input type="radio" name="q02_agent2" value="6">
+                        <input type="radio" name="q02_agent2" value="7">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="topic">I understood the AI’s intentions.</td>
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q03_agent1" value="1">
+                        <input type="radio" name="q03_agent1" value="2">
+                        <input type="radio" name="q03_agent1" value="3">
+                        <input type="radio" name="q03_agent1" value="4">
+                        <input type="radio" name="q03_agent1" value="5">
+                        <input type="radio" name="q03_agent1" value="6">
+                        <input type="radio" name="q03_agent1" value="7">
+                      </div>
+                    </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q03_agent2" value="1">
+                        <input type="radio" name="q03_agent2" value="2">
+                        <input type="radio" name="q03_agent2" value="3">
+                        <input type="radio" name="q03_agent2" value="4">
+                        <input type="radio" name="q03_agent2" value="5">
+                        <input type="radio" name="q03_agent2" value="6">
+                        <input type="radio" name="q03_agent2" value="7">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="topic">The AI understood my intentions.</td>
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q04_agent1" value="1">
+                        <input type="radio" name="q04_agent1" value="2">
+                        <input type="radio" name="q04_agent1" value="3">
+                        <input type="radio" name="q04_agent1" value="4">
+                        <input type="radio" name="q04_agent1" value="5">
+                        <input type="radio" name="q04_agent1" value="6">
+                        <input type="radio" name="q04_agent1" value="7">
+                      </div>
+                    </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q04_agent2" value="1">
+                        <input type="radio" name="q04_agent2" value="2">
+                        <input type="radio" name="q04_agent2" value="3">
+                        <input type="radio" name="q04_agent2" value="4">
+                        <input type="radio" name="q04_agent2" value="5">
+                        <input type="radio" name="q04_agent2" value="6">
+                        <input type="radio" name="q04_agent2" value="7">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="topic">I contributed more to the team's performance.</td>
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q05_agent1" value="1">
+                        <input type="radio" name="q05_agent1" value="2">
+                        <input type="radio" name="q05_agent1" value="3">
+                        <input type="radio" name="q05_agent1" value="4">
+                        <input type="radio" name="q05_agent1" value="5">
+                        <input type="radio" name="q05_agent1" value="6">
+                        <input type="radio" name="q05_agent1" value="7">
+                      </div>
+                    </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q05_agent2" value="1">
+                        <input type="radio" name="q05_agent2" value="2">
+                        <input type="radio" name="q05_agent2" value="3">
+                        <input type="radio" name="q05_agent2" value="4">
+                        <input type="radio" name="q05_agent2" value="5">
+                        <input type="radio" name="q05_agent2" value="6">
+                        <input type="radio" name="q05_agent2" value="7">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="topic">The AI was easy to play with.</td>
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q06_agent1" value="1">
+                        <input type="radio" name="q06_agent1" value="2">
+                        <input type="radio" name="q06_agent1" value="3">
+                        <input type="radio" name="q06_agent1" value="4">
+                        <input type="radio" name="q06_agent1" value="5">
+                        <input type="radio" name="q06_agent1" value="6">
+                        <input type="radio" name="q06_agent1" value="7">
+                      </div>
+                    </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q06_agent2" value="1">
+                        <input type="radio" name="q06_agent2" value="2">
+                        <input type="radio" name="q06_agent2" value="3">
+                        <input type="radio" name="q06_agent2" value="4">
+                        <input type="radio" name="q06_agent2" value="5">
+                        <input type="radio" name="q06_agent2" value="6">
+                        <input type="radio" name="q06_agent2" value="7">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="topic">The AI was fun to play with.</td>
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q07_agent1" value="1">
+                        <input type="radio" name="q07_agent1" value="2">
+                        <input type="radio" name="q07_agent1" value="3">
+                        <input type="radio" name="q07_agent1" value="4">
+                        <input type="radio" name="q07_agent1" value="5">
+                        <input type="radio" name="q07_agent1" value="6">
+                        <input type="radio" name="q07_agent1" value="7">
+                      </div>
+                    </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q07_agent2" value="1">
+                        <input type="radio" name="q07_agent2" value="2">
+                        <input type="radio" name="q07_agent2" value="3">
+                        <input type="radio" name="q07_agent2" value="4">
+                        <input type="radio" name="q07_agent2" value="5">
+                        <input type="radio" name="q07_agent2" value="6">
+                        <input type="radio" name="q07_agent2" value="7">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="topic">The AI and I had a similar playing style.</td>
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q08_agent1" value="1">
+                        <input type="radio" name="q08_agent1" value="2">
+                        <input type="radio" name="q08_agent1" value="3">
+                        <input type="radio" name="q08_agent1" value="4">
+                        <input type="radio" name="q08_agent1" value="5">
+                        <input type="radio" name="q08_agent1" value="6">
+                        <input type="radio" name="q08_agent1" value="7">
+                      </div>
+                    </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q08_agent2" value="1">
+                        <input type="radio" name="q08_agent2" value="2">
+                        <input type="radio" name="q08_agent2" value="3">
+                        <input type="radio" name="q08_agent2" value="4">
+                        <input type="radio" name="q08_agent2" value="5">
+                        <input type="radio" name="q08_agent2" value="6">
+                        <input type="radio" name="q08_agent2" value="7">
+                      </div>
+                    </td>
+                  </tr>
+                  <!-- <tr>
+                    <td class="topic">The AI was fun to play with.</td>
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q09_agent1" value="1">
+                        <input type="radio" name="q09_agent1" value="2">
+                        <input type="radio" name="q09_agent1" value="3">
+                        <input type="radio" name="q09_agent1" value="4">
+                        <input type="radio" name="q09_agent1" value="5">
+                        <input type="radio" name="q09_agent1" value="6">
+                        <input type="radio" name="q09_agent1" value="7">
+                      </div>
+                    </td>
+                    <td colspan="7">
+                      <div class="radio-group">
+                        <input type="radio" name="q09_agent2" value="1">
+                        <input type="radio" name="q09_agent2" value="2">
+                        <input type="radio" name="q09_agent2" value="3">
+                        <input type="radio" name="q09_agent2" value="4">
+                        <input type="radio" name="q09_agent2" value="5">
+                        <input type="radio" name="q09_agent2" value="6">
+                        <input type="radio" name="q09_agent2" value="7">
+                      </div>
+                    </td>
+                  </tr> -->
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="row" id="survey-submit-button-container">
+              <div class="col-12 right-button">
+                <button class="btn btn-primary" id="survey-complete-button-full" disabled>
+                  Submit
+                </button>
+              </div>
+            </div>
+        </div>
+
+           <!-- WORKLOAD ONLY CONTAINER -->
+           <div class="col-12 trialbox justify-content-center" id="survey-workload-container">
+            <!--------------------------------------------
+            |   Row 1 - Difficulty Question              |
+            --------------------------------------------->
+            <div class="row" id="survey-question-container">
+                <!-- Trial Question Information (actual question) -->
+                <div class="col-12 text-center" id="survey-task-container">
+                    <!-- Update trial question here -->
+                    <h5 class="trial-task trial-question trial-information" id="survey-task">
+                        Please indicate the extent to which you agree or disagree with the following statements: 
+                    </h5>
+                    
+                </div>
+            </div>
+            <!--------------------------------------------
+            |   Row 2 - Topic Options                    |
+            --------------------------------------------->
+            <div class="row" id="survey-likert-table-container">
+                <div class="col-12">
+                    <div class="row" id="survey-likert-legend-header-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            <b>Topic</b>
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-legend' id="survey-likert-legend-header">
+                                <li>
+                                    <label><b>Strongly Disagree</b></label>
+                                    <label>1</label>
+                                </li>
+                                <li>
+                                    <label>2</label>
+                                </li>
+                                <li>
+                                    <label>3</label>
+                                </li>
+                                <li>
+                                    <label>4</label>
+                                </li>
+                                <li>
+                                    <label>5</label>
+                                </li>
+                                <li>
+                                    <label>6</label>
+                                </li>
+
+                                <li>
+                                    <label><b>Strongly Agree</b></label>
+                                    <label>7</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 01 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            How mentally demanding was the task? 
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic-workload' id="survey-topic01-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q01" value="1"></li>
+                                <li><input type="radio" name="q01" value="2"></li>
+                                <li><input type="radio" name="q01" value="3"></li>
+                                <li><input type="radio" name="q01" value="4"></li>
+                                <li><input type="radio" name="q01" value="5"></li>
+                                <li><input type="radio" name="q01" value="6"></li>
+                                <li><input type="radio" name="q01" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 02 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            How successful were you in accomplishing what you were asked to do?
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic-workload' id="survey-topic02-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q02" value="1"></li>
+                                <li><input type="radio" name="q02" value="2"></li>
+                                <li><input type="radio" name="q02" value="3"></li>
+                                <li><input type="radio" name="q02" value="4"></li>
+                                <li><input type="radio" name="q02" value="5"></li>
+                                <li><input type="radio" name="q02" value="6"></li>
+                                <li><input type="radio" name="q02" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 03 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            How hard did you have to work to accomplish your level of performance?
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic-workload' id="survey-topic03-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q03" value="1"></li>
+                                <li><input type="radio" name="q03" value="2"></li>
+                                <li><input type="radio" name="q03" value="3"></li>
+                                <li><input type="radio" name="q03" value="4"></li>
+                                <li><input type="radio" name="q03" value="5"></li>
+                                <li><input type="radio" name="q03" value="6"></li>
+                                <li><input type="radio" name="q03" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-------------------------------------------------
+            |   Submit/Proceed Button                         |
+            -------------------------------------------------->
+            <div class="row" id="survey-submit-button-container">
+                <div class="col-12 right-button">
+                    <button class="btn btn-primary" id="survey-complete-button-workload" disabled>
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- COMPLETE GAME -->
+        <div class="col-12 trialbox" id="complete-page-content-container">
+            <!---------------------------------------------
+            |   Message to Participants                   |
+            |                                             |
+            |       The thank you message we want to      |
+            |       display to participants.              |
+            ---------------------------------------------->
+            <div class="row justify-content-center" id="complete-message-to-participant-container">
+                <div class="col-12" id="complete-message-thank-you">
+                    <h3>
+                        <b>Thank You!</b>
+                    </h3>
+                </div>
+                <div class="col-12" id="complete-message-main-text">
+                    <h3>
+                        We greatly appreciate your interest and participation in our study.
+                    </h3>
+                </div>
+                <div class="col-12" id="complete-message-sub-text">
+                    <h4>
+                        
+                    </h4>
+                </div>
+            </div>
+            <!---------------------------------------------
+            |   User Feedback                             |
+            |                                             |
+            |       Ask users to submit any feedback they |
+            |       may have.                             |
+            ---------------------------------------------->
+            <div class="row justify-content-center" id="complete-user-feedback-container">
+                <div class="col-12 text-center" id="user-feedback-header">
+                    <h4>
+                        <b>User Feedback</b>
+                    </h4>
+                </div>
+                <div class="col-12 text-center" id="user-feedback-text-container">
+                    <textarea name="participant-feedback" rows="4" id="user-feedback-text"
+                        placeholder="Thank you for participating in this study! Any feedback about your experience is appreciated."></textarea>
+                </div>
+                <div class="col-12" id="user-feedback-button-container">
+                    <button id="user-feedback-button" name="feedback" type="submit" class="btn btn-secondary" disabled>
+                        Submit Feedback
+                    </button>
+                </div>
+            </div>
+            <!--------------------------------------------- 
+            |   Compensation Information                  |
+            |                                             |
+            |       Be sure to explain to participants    |
+            |       how they are going to be compensated. |
+            ---------------------------------------------->
+            <div class="row justify-content-center" id="complete-unique-code-container">
+                <div class="col-12" id="unique-code-text">
+                    <h4><b>Redirect URL</b></h4>
+                </div>
+                <div class="col-12" id="how-to-get-compensated-text">
+                    <h5>
+                        To be compensated, you must click the button below to be redirected
+                        back to Prolific.
+                    </h5>
+                </div>
+                <div class="col-12" id="compensation-note">
+                    <h5>
+                        Once you are redirected, you will not be able to return to this page.
+                    </h5>
+                </div>
+                <!-- Unique Code -->
+                <div class="col-12" id="unique-code-text-box" hidden="true">
+                    <input type="text" value="Your Unique Code" id="code" readonly>
+                </div>
+                <div class="col-12" id="unique-code-copy-button-container">
+                    <button type="button" class="btn btn-primary" id="unique-code-copy-button">
+                        Redirect to Prolific
+                    </button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

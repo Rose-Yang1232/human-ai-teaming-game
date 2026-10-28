@@ -1,0 +1,11 @@
+# Collected experiment data — never commit participant data to git.
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Exports produced by server/export.js
+exports/
+
+.DS_Store
+node_modules/

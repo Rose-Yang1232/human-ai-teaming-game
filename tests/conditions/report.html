@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI condition tests</title>
+<style>
+body { font: 16px system-ui, sans-serif; margin: 24px auto; max-width: 1250px; padding: 0 16px; color: #192c3d; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+button, select { padding: 8px; margin: 4px; font: inherit; }
+button { cursor: pointer; } .fail { color: #a01818; } .pass { color: #166034; }
+#detail { display: flex; gap: 24px; flex-wrap: wrap; margin: 20px 0; }
+canvas { width: min(100%, 480px); border: 1px solid #aaa; }
+pre { white-space: pre-wrap; max-width: 680px; font-size: 13px; }
+</style>
+<h1>Deterministic AI condition tests</h1>
+<p id="summary"></p><p id="scope"></p>
+<p>Each board runs under all 12 configurations. Select a result to inspect the fixed board and planner output.
+Red = human; green = AI; gold = targets. Dashed green line = first interception route.</p>
+<label>Board <select id="board"><option value="">All boards</option></select></label>
+<label>Results <select id="status"><option value="">All results</option><option value="fail">Failures</option><option value="observations">With observations</option></select></label>
+<div id="detail"><canvas id="canvas" width="800" height="800" aria-label="Selected test board"></canvas><div><h2 id="title">Select a result</h2><p id="description"></p><label>Decision <select id="step"></select></label><pre id="output"></pre></div></div>
+<table><thead><tr><th>Board</th><th>Constraint</th><th>Objective</th><th>Awareness</th><th>Choices</th><th>Result</th><th>Inspect</th></tr></thead><tbody id="rows"></tbody></table>
+<h2>Interception edge checks</h2><pre id="diagnostics"></pre>
+<details><summary>Run settings and source hashes</summary><pre id="metadata"></pre></details>
+<script>
+const report = /* REPORT_DATA */null;
+if (!report) {
+    document.getElementById('summary').textContent = 'This is the report template. Run node tests/conditions/run.mjs, then open results/report.html.';
+} else {
+    const $ = id => document.getElementById(id);
+    $('summary').textContent = `${report.summary.cases} cases; ${report.summary.failedCases} failed. ${report.summary.failedDiagnostics} solver edge checks failed. Generated ${report.generatedAt}.`;
+    $('scope').textContent = report.scope;
+    $('metadata').textContent = JSON.stringify({ defaults: report.defaults, sourceHashes: report.sourceHashes, strictNoHarm: report.strictNoHarm }, null, 2);
+    $('diagnostics').textContent = report.diagnostics.map(d => `${d.pass ? 'PASS' : 'FAIL'} ${d.name}: expected t=${d.expectedTime}, got ${JSON.stringify(d.actual)}`).join('\n');
+    for (const board of report.boards) $('board').add(new Option(board.name, board.id));
+    let selected;
+    function draw() {
+        if (!selected) return;
+        const board = report.boards.find(b => b.id === selected.boardId);
+        const step = selected.steps[Number($('step').value) || 0];
+        $('title').textContent = board.name;
+        $('description').textContent = board.description;
+        $('output').textContent = JSON.stringify({ condition: selected.condition, decision: step,
+            observations: selected.observations, failedChecks: selected.checks.filter(c => !c.pass) }, null, 2);
+        const ctx = $('canvas').getContext('2d');
+        ctx.clearRect(0, 0, 800, 800);
+        ctx.strokeStyle = '#aaa'; ctx.beginPath(); ctx.arc(400, 400, 390, 0, 2 * Math.PI); ctx.stroke();
+        const angle = Math.atan2(board.human.y - 400, board.human.x - 400) + Math.PI / 2;
+        ctx.beginPath(); ctx.moveTo(400 + 390 * Math.cos(angle), 400 + 390 * Math.sin(angle));
+        ctx.lineTo(400 - 390 * Math.cos(angle), 400 - 390 * Math.sin(angle)); ctx.stroke();
+        if (step && step.first.ID !== -2) {
+            ctx.strokeStyle = '#16803a'; ctx.setLineDash([8, 5]); ctx.beginPath();
+            ctx.moveTo(board.ai.x, board.ai.y); ctx.lineTo(step.first.x, step.first.y); ctx.stroke(); ctx.setLineDash([]);
+        }
+        for (const obj of board.objects) {
+            ctx.fillStyle = obj.active && !obj.intercepted && !obj.AIintercepted ? '#efbf43' : '#ccc';
+            ctx.strokeStyle = obj.ID === step?.humanTarget ? '#ba2222' : '#333'; ctx.lineWidth = obj.ID === step?.humanTarget ? 4 : 1;
+            ctx.beginPath();
+            if (obj.shape === 'square') ctx.rect(obj.x - 10, obj.y - 10, 20, 20);
+            else { ctx.moveTo(obj.x, obj.y - 13); ctx.lineTo(obj.x + 12, obj.y + 10); ctx.lineTo(obj.x - 12, obj.y + 10); ctx.closePath(); }
+            ctx.fill(); ctx.stroke(); ctx.fillStyle = '#192c3d'; ctx.font = '16px sans-serif';
+            ctx.fillText(`#${obj.ID} v${obj.value}`, obj.x - 20, obj.y - 20);
+        }
+        ctx.lineWidth = 1;
+        for (const [actor, color, label] of [[board.human, '#ba2222', 'Human'], [board.ai, '#16803a', 'AI']]) {
+            ctx.fillStyle = color; ctx.fillRect(actor.x - 15, actor.y - 15, 30, 30); ctx.fillText(label, actor.x - 20, actor.y + 35);
+        }
+    }
+    function inspect(row) {
+        selected = row; $('step').replaceChildren();
+        row.steps.forEach((step, i) => $('step').add(new Option(step.label, i))); draw();
+    }
+    function render() {
+        $('rows').replaceChildren();
+        for (const row of report.results) {
+            const failed = row.checks.some(c => !c.pass);
+            if ($('board').value && row.boardId !== $('board').value) continue;
+            if ($('status').value === 'fail' && !failed) continue;
+            if ($('status').value === 'observations' && !row.observations.length) continue;
+            const tr = document.createElement('tr');
+            for (const value of [row.boardId, row.condition.aiConstraint, row.condition.aiObjective, row.condition.aiAwareness,
+                row.steps.map(s => s.first.ID === -2 ? 'hold' : `#${s.first.ID}`).join(' → '),
+                `${failed ? 'FAIL' : 'PASS'}${row.observations.length ? ' · observations' : ''}`]) {
+                const td = document.createElement('td'); td.textContent = value; tr.append(td);
+            }
+            tr.children[5].className = failed ? 'fail' : 'pass';
+            const td = document.createElement('td'); const button = document.createElement('button');
+            button.textContent = 'Inspect'; button.onclick = () => inspect(row); td.append(button); tr.append(td); $('rows').append(tr);
+        }
+    }
+    $('board').onchange = render; $('status').onchange = render; $('step').onchange = draw;
+    render(); inspect(report.results[0]);
+}
+</script>
+</html>

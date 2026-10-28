@@ -1,0 +1,9 @@
+{
+  "name": "human-ai-collab-server",
+  "private": true,
+  "type": "module",
+  "description": "Local experiment server. No dependencies: uses node:http and node:sqlite.",
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}

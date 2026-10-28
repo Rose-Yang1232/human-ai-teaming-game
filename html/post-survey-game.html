@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Survey</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/onboarding-flow.css">
+    <script src="../js/api-client.js"></script>
+    <style>
+        .site-header {
+            background-color: #0064a4;
+            padding: 8px 0;
+            color: #fff;
+        }
+        .site-header .title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        .brand-logo {
+            width: 70px;
+            height: 30px;
+            object-fit: contain;
+        }
+        .survey-page {
+            color: #000000;
+        }
+        .survey-page .flow-card {
+            max-width: 980px;
+        }
+        .q { border-bottom: 1px solid #d7e2ef; padding: 12px 0; }
+        .q:last-child { border-bottom: 0; }
+        .opts { display: flex; flex-wrap: wrap; gap: 36px; }
+        .opts label { margin-bottom: 0; font-weight: 600; }
+        .opts-stacked { flex-direction: column; gap: 6px; }
+        .opts-stacked label { font-weight: 400; }
+        .free-text { width: 100%; min-height: 110px; resize: vertical; }
+        .text-hint { font-size: 0.88rem; color: #5b6b7d; margin: 6px 0 0; }
+        .text-hint.ok { color: #1c7c3f; }
+    </style>
+</head>
+<body class="survey-page">
+    <header class="site-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-2"><img class="brand-logo" src="../images/purdue_logo.png" alt="Purdue logo"></div>
+                <div class="col-8"><h2 class="title">Target Intercept Game</h2></div>
+                <div class="col-2 text-right"><img class="brand-logo" src="../images/purdue_logo.png" alt="Purdue logo"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mt-3">
+        <div class="flow-card">
+            <h3 id="post-survey-title">Post-Survey: Round 1</h3>
+            <p>Please reflect your experience in the <span id="post-survey-round-word">first</span> round of the game and rate each of the following statements on a 7 point scale from <strong>1 (strongly disagree)</strong> to <strong>7 (strongly agree)</strong>.</p>
+
+            <div class="q"><p>Q1: The AI and I were a team.</p><div class="opts">
+                <label><input type="radio" name="post-q01" value="1"> 1</label><label><input type="radio" name="post-q01" value="2"> 2</label><label><input type="radio" name="post-q01" value="3"> 3</label><label><input type="radio" name="post-q01" value="4"> 4</label><label><input type="radio" name="post-q01" value="5"> 5</label><label><input type="radio" name="post-q01" value="6"> 6</label><label><input type="radio" name="post-q01" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q2: The AI was competent.</p><div class="opts">
+                <label><input type="radio" name="post-q02" value="1"> 1</label><label><input type="radio" name="post-q02" value="2"> 2</label><label><input type="radio" name="post-q02" value="3"> 3</label><label><input type="radio" name="post-q02" value="4"> 4</label><label><input type="radio" name="post-q02" value="5"> 5</label><label><input type="radio" name="post-q02" value="6"> 6</label><label><input type="radio" name="post-q02" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q3: I understood the AI's intentions.</p><div class="opts">
+                <label><input type="radio" name="post-q03" value="1"> 1</label><label><input type="radio" name="post-q03" value="2"> 2</label><label><input type="radio" name="post-q03" value="3"> 3</label><label><input type="radio" name="post-q03" value="4"> 4</label><label><input type="radio" name="post-q03" value="5"> 5</label><label><input type="radio" name="post-q03" value="6"> 6</label><label><input type="radio" name="post-q03" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q4: The AI understood my intentions.</p><div class="opts">
+                <label><input type="radio" name="post-q04" value="1"> 1</label><label><input type="radio" name="post-q04" value="2"> 2</label><label><input type="radio" name="post-q04" value="3"> 3</label><label><input type="radio" name="post-q04" value="4"> 4</label><label><input type="radio" name="post-q04" value="5"> 5</label><label><input type="radio" name="post-q04" value="6"> 6</label><label><input type="radio" name="post-q04" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q5: I contributed more to the team's performance.</p><div class="opts">
+                <label><input type="radio" name="post-q05" value="1"> 1</label><label><input type="radio" name="post-q05" value="2"> 2</label><label><input type="radio" name="post-q05" value="3"> 3</label><label><input type="radio" name="post-q05" value="4"> 4</label><label><input type="radio" name="post-q05" value="5"> 5</label><label><input type="radio" name="post-q05" value="6"> 6</label><label><input type="radio" name="post-q05" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q6: The AI was easy to play with.</p><div class="opts">
+                <label><input type="radio" name="post-q06" value="1"> 1</label><label><input type="radio" name="post-q06" value="2"> 2</label><label><input type="radio" name="post-q06" value="3"> 3</label><label><input type="radio" name="post-q06" value="4"> 4</label><label><input type="radio" name="post-q06" value="5"> 5</label><label><input type="radio" name="post-q06" value="6"> 6</label><label><input type="radio" name="post-q06" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q7: The AI was fun to play with.</p><div class="opts">
+                <label><input type="radio" name="post-q07" value="1"> 1</label><label><input type="radio" name="post-q07" value="2"> 2</label><label><input type="radio" name="post-q07" value="3"> 3</label><label><input type="radio" name="post-q07" value="4"> 4</label><label><input type="radio" name="post-q07" value="5"> 5</label><label><input type="radio" name="post-q07" value="6"> 6</label><label><input type="radio" name="post-q07" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q8: The AI had a similar playing style to me.</p><div class="opts">
+                <label><input type="radio" name="post-q08" value="1"> 1</label><label><input type="radio" name="post-q08" value="2"> 2</label><label><input type="radio" name="post-q08" value="3"> 3</label><label><input type="radio" name="post-q08" value="4"> 4</label><label><input type="radio" name="post-q08" value="5"> 5</label><label><input type="radio" name="post-q08" value="6"> 6</label><label><input type="radio" name="post-q08" value="7"> 7</label>
+            </div></div>
+
+            <div class="q"><p>Q9: The task was mentally demanding.</p><div class="opts">
+                <label><input type="radio" name="post-w01" value="1"> 1</label><label><input type="radio" name="post-w01" value="2"> 2</label><label><input type="radio" name="post-w01" value="3"> 3</label><label><input type="radio" name="post-w01" value="4"> 4</label><label><input type="radio" name="post-w01" value="5"> 5</label><label><input type="radio" name="post-w01" value="6"> 6</label><label><input type="radio" name="post-w01" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q10: The task was physically demanding.</p><div class="opts">
+                <label><input type="radio" name="post-w02" value="1"> 1</label><label><input type="radio" name="post-w02" value="2"> 2</label><label><input type="radio" name="post-w02" value="3"> 3</label><label><input type="radio" name="post-w02" value="4"> 4</label><label><input type="radio" name="post-w02" value="5"> 5</label><label><input type="radio" name="post-w02" value="6"> 6</label><label><input type="radio" name="post-w02" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q11: The pace of the task was hurried or rushed.</p><div class="opts">
+                <label><input type="radio" name="post-w03" value="1"> 1</label><label><input type="radio" name="post-w03" value="2"> 2</label><label><input type="radio" name="post-w03" value="3"> 3</label><label><input type="radio" name="post-w03" value="4"> 4</label><label><input type="radio" name="post-w03" value="5"> 5</label><label><input type="radio" name="post-w03" value="6"> 6</label><label><input type="radio" name="post-w03" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q12: I was successful in accomplishing what I was asked to do.</p><div class="opts">
+                <label><input type="radio" name="post-w04" value="1"> 1</label><label><input type="radio" name="post-w04" value="2"> 2</label><label><input type="radio" name="post-w04" value="3"> 3</label><label><input type="radio" name="post-w04" value="4"> 4</label><label><input type="radio" name="post-w04" value="5"> 5</label><label><input type="radio" name="post-w04" value="6"> 6</label><label><input type="radio" name="post-w04" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q13: I had to work hard to accomplish my level of performance.</p><div class="opts">
+                <label><input type="radio" name="post-w05" value="1"> 1</label><label><input type="radio" name="post-w05" value="2"> 2</label><label><input type="radio" name="post-w05" value="3"> 3</label><label><input type="radio" name="post-w05" value="4"> 4</label><label><input type="radio" name="post-w05" value="5"> 5</label><label><input type="radio" name="post-w05" value="6"> 6</label><label><input type="radio" name="post-w05" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q14: I felt insecure, discouraged, irritated, stressed, and annoyed.</p><div class="opts">
+                <label><input type="radio" name="post-w06" value="1"> 1</label><label><input type="radio" name="post-w06" value="2"> 2</label><label><input type="radio" name="post-w06" value="3"> 3</label><label><input type="radio" name="post-w06" value="4"> 4</label><label><input type="radio" name="post-w06" value="5"> 5</label><label><input type="radio" name="post-w06" value="6"> 6</label><label><input type="radio" name="post-w06" value="7"> 7</label>
+            </div></div>
+
+            <!--
+                Items below added for the discrete-setting study include perceived
+                behavior checks for the three AI dimensions on `settings`
+                (see new-interface-all-agents.js):
+
+                  aiAwareness (oblivious | coordinating)
+                    -> post-adapt1      (adapts when my actions change)
+                    -> post-noninterf1  (stays off targets I am already pursuing)
+                    -> post-region1    (stays off targets close to where I am)
+                  aiConstraint (may-harm | no-harm)
+                    -> post-noharm1     (stays off the squares that pay MY bonus)
+                  Study objectives: aiObjective (self-urgency-bonus | team)
+                    -> post-obj-team   (maximizing the team score)
+                    -> post-obj-self   (maximizing its own score = team + its bonus;
+                       existing field name retained). Analyse these separately.
+                    -> post-comprehension, free text, coded by hand afterwards.
+                    -> post-weird, optional free text on anything strange the AI did.
+
+                post-noninterf1/post-region1 and post-noharm1 probe different
+                manipulations (awareness vs. constraint) -- do not average them
+                into a single "non-interference" scale.
+
+                Reliance/trust (post-rely1, post-rely2) is an outcome measure, not a
+                manipulation check.
+
+                Dropped as redundant with the legacy scale: post-pred1, post-pred2,
+                post-anticip1, post-anticip2, post-noninterf2, post-trust1. The legacy
+                8-item teaming scale (post-q01..post-q08) and NASA-TLX
+                (post-w01..post-w06) are kept whole for comparability.
+            -->
+
+            <div class="q"><p>Q15: The AI avoided going after the targets that give me an extra bonus.</p><div class="opts">
+                <label><input type="radio" name="post-noharm1" value="1"> 1</label><label><input type="radio" name="post-noharm1" value="2"> 2</label><label><input type="radio" name="post-noharm1" value="3"> 3</label><label><input type="radio" name="post-noharm1" value="4"> 4</label><label><input type="radio" name="post-noharm1" value="5"> 5</label><label><input type="radio" name="post-noharm1" value="6"> 6</label><label><input type="radio" name="post-noharm1" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q16: I could rely on the AI to make decisions that helped the team.</p><div class="opts">
+                <label><input type="radio" name="post-rely1" value="1"> 1</label><label><input type="radio" name="post-rely1" value="2"> 2</label><label><input type="radio" name="post-rely1" value="3"> 3</label><label><input type="radio" name="post-rely1" value="4"> 4</label><label><input type="radio" name="post-rely1" value="5"> 5</label><label><input type="radio" name="post-rely1" value="6"> 6</label><label><input type="radio" name="post-rely1" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q17: The AI appeared to prioritize maximizing the team score.</p><div class="opts">
+                <label><input type="radio" name="post-obj-team" value="1"> 1</label><label><input type="radio" name="post-obj-team" value="2"> 2</label><label><input type="radio" name="post-obj-team" value="3"> 3</label><label><input type="radio" name="post-obj-team" value="4"> 4</label><label><input type="radio" name="post-obj-team" value="5"> 5</label><label><input type="radio" name="post-obj-team" value="6"> 6</label><label><input type="radio" name="post-obj-team" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q18: The AI appeared to prioritize maximizing its own score, which includes both the team score and its bonus.</p><div class="opts">
+                <label><input type="radio" name="post-obj-self" value="1"> 1</label><label><input type="radio" name="post-obj-self" value="2"> 2</label><label><input type="radio" name="post-obj-self" value="3"> 3</label><label><input type="radio" name="post-obj-self" value="4"> 4</label><label><input type="radio" name="post-obj-self" value="5"> 5</label><label><input type="radio" name="post-obj-self" value="6"> 6</label><label><input type="radio" name="post-obj-self" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q19: The AI avoided going after targets I was already pursuing.</p><div class="opts">
+                <label><input type="radio" name="post-noninterf1" value="1"> 1</label><label><input type="radio" name="post-noninterf1" value="2"> 2</label><label><input type="radio" name="post-noninterf1" value="3"> 3</label><label><input type="radio" name="post-noninterf1" value="4"> 4</label><label><input type="radio" name="post-noninterf1" value="5"> 5</label><label><input type="radio" name="post-noninterf1" value="6"> 6</label><label><input type="radio" name="post-noninterf1" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q20: The AI avoided going after targets that were close to where I was.</p><div class="opts">
+                <label><input type="radio" name="post-region1" value="1"> 1</label><label><input type="radio" name="post-region1" value="2"> 2</label><label><input type="radio" name="post-region1" value="3"> 3</label><label><input type="radio" name="post-region1" value="4"> 4</label><label><input type="radio" name="post-region1" value="5"> 5</label><label><input type="radio" name="post-region1" value="6"> 6</label><label><input type="radio" name="post-region1" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q21: The AI adapted and coordinated appropriately when my actions changed.</p><div class="opts">
+                <label><input type="radio" name="post-adapt1" value="1"> 1</label><label><input type="radio" name="post-adapt1" value="2"> 2</label><label><input type="radio" name="post-adapt1" value="3"> 3</label><label><input type="radio" name="post-adapt1" value="4"> 4</label><label><input type="radio" name="post-adapt1" value="5"> 5</label><label><input type="radio" name="post-adapt1" value="6"> 6</label><label><input type="radio" name="post-adapt1" value="7"> 7</label>
+            </div></div>
+            <div class="q"><p>Q22: The AI behaved dependably.</p><div class="opts">
+                <label><input type="radio" name="post-rely2" value="1"> 1</label><label><input type="radio" name="post-rely2" value="2"> 2</label><label><input type="radio" name="post-rely2" value="3"> 3</label><label><input type="radio" name="post-rely2" value="4"> 4</label><label><input type="radio" name="post-rely2" value="5"> 5</label><label><input type="radio" name="post-rely2" value="6"> 6</label><label><input type="radio" name="post-rely2" value="7"> 7</label>
+            </div></div>
+
+            <div class="q">
+                <p>Q23: What do you think the AI mainly tried to do? Please answer in your own words.</p>
+                <textarea id="post-comprehension" name="post-comprehension" class="free-text form-control"
+                          rows="4" maxlength="1000"
+                          placeholder="Describe what the AI seemed to be going for, and what made you think so."></textarea>
+                <p id="post-comprehension-hint" class="text-hint">Please write at least a short sentence.</p>
+            </div>
+
+            <div class="q">
+                <p>Q24: Did anything about the AI's behavior seem strange or unexpected? If so, please describe it. (Optional)</p>
+                <textarea id="post-weird" name="post-weird" class="free-text form-control"
+                          rows="3" maxlength="1000"
+                          placeholder="Leave blank if nothing seemed strange."></textarea>
+            </div>
+
+            <div class="flow-btn-row">
+                <button id="post-next" class="btn btn-primary" disabled>Continue</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        (function () {
+            const pageOpenedAt = Date.now();
+            const requiredGroups = [
+                "post-q01", "post-q02", "post-q03", "post-q04",
+                "post-q05", "post-q06", "post-q07", "post-q08",
+                "post-w01", "post-w02", "post-w03",
+                "post-w04", "post-w05", "post-w06",
+                "post-noharm1", "post-rely1",
+                "post-obj-team", "post-obj-self",
+                "post-noninterf1", "post-region1",
+                "post-adapt1", "post-rely2"
+            ];
+
+            // Free-response quality gate. Deliberately lenient: a terse but real
+            // answer ("maximize team score") must pass, while blank / "idk" / mashed
+            // keys must not. Tuning knobs:
+            const MIN_CHARS = 12;     // trimmed length
+            const MIN_WORDS = 3;      // word-like tokens (alphabetic, has a vowel)
+            const MIN_DISTINCT = 3;   // distinct word-like tokens, blocks "the the the"
+            const LOW_EFFORT = new Set([
+                "na", "n", "a", "idk", "dk", "dunno", "nothing", "none", "no", "nope",
+                "yes", "yeah", "nil", "nan", "x", "xx", "xxx", "test", "testing",
+                "asdf", "qwerty", "good", "great", "ok", "okay", "fine", "nice",
+                "unsure", "maybe", "sure", "hi", "hello", "stuff", "things", "idunno",
+                "whatever", "anything", "something", "blah", "meh"
+            ]);
+
+            const isMeaningfulText = function (raw) {
+                const text = (raw || "").trim();
+                if (text.length < MIN_CHARS) return false;
+                // 4+ of the same character in a row is spam ("aaaaa", ".....").
+                if (/(.)\1{3,}/.test(text.toLowerCase())) return false;
+
+                const tokens = text.toLowerCase()
+                    .replace(/[^a-z0-9'\s-]/g, " ")
+                    .split(/\s+/)
+                    .filter(Boolean);
+                // A word-like token is alphabetic, 2+ chars, and contains a vowel,
+                // which rules out "sdfgh" without rejecting digits elsewhere.
+                const words = tokens.filter(function (t) {
+                    return t.length >= 2 && /^[a-z'-]+$/.test(t) && /[aeiouy]/.test(t);
+                });
+                if (words.length < MIN_WORDS) return false;
+                if (new Set(words).size < MIN_DISTINCT) return false;
+                // Every word is filler -> no content.
+                if (words.every(function (w) { return LOW_EFFORT.has(w); })) return false;
+                return true;
+            };
+
+            const nextBtn = document.getElementById("post-next");
+            const freeText = document.getElementById("post-comprehension");
+            const freeHint = document.getElementById("post-comprehension-hint");
+
+            const updateReady = function () {
+                const allAnswered = requiredGroups.every(function (name) {
+                    return document.querySelector("input[name='" + name + "']:checked");
+                });
+                const textOk = isMeaningfulText(freeText.value);
+
+                if (freeText.value.trim() === "") {
+                    freeHint.textContent = "Please write at least a short sentence.";
+                    freeHint.classList.remove("ok");
+                } else if (!textOk) {
+                    freeHint.textContent = "Please give a bit more detail \u2014 a full sentence in your own words.";
+                    freeHint.classList.remove("ok");
+                } else {
+                    // Enough detail: say nothing.
+                    freeHint.textContent = "";
+                }
+
+                nextBtn.disabled = !(allAnswered && textOk);
+            };
+
+            document.querySelectorAll("input[name^='post-']").forEach(function (el) {
+                el.addEventListener("change", updateReady);
+            });
+            freeText.addEventListener("input", updateReady);
+            updateReady();
+
+            const session = parseInt(new URLSearchParams(window.location.search).get("session"), 10);
+            if (session === 2) {
+                document.getElementById("post-survey-title").textContent = "Post-Survey: Round 2";
+                document.getElementById("post-survey-round-word").textContent = "second";
+            }
+
+            // Collect every post-* field: the 22 Likert groups plus both free-text answers.
+            const collectResponses = function () {
+                const out = {};
+                requiredGroups.forEach(function (name) {
+                    const checked = document.querySelector("input[name='" + name + "']:checked");
+                    out[name] = checked ? Number(checked.value) : null;
+                });
+                out["post-comprehension"] = freeText.value.trim();
+                out["post-weird"] = document.getElementById("post-weird").value.trim();
+                return out;
+            };
+
+            nextBtn.addEventListener("click", async function () {
+                nextBtn.disabled = true;
+                try {
+                    // A survey may recover an ID, but must never mint one.
+                    window.ExperimentAPI.participantId();
+                    const saved = await window.ExperimentAPI.saveSurvey({
+                        session: Number.isNaN(session) ? null : session,
+                        responses: collectResponses(),
+                        freeText: freeText.value.trim(),
+                        durationMs: Date.now() - pageOpenedAt
+                    });
+                    if (!saved) throw Error('Your survey could not be saved. Check your connection and click Next to try again.');
+                } catch (error) {
+                    window.ExperimentAPI.showStudyError(error);
+                    updateReady();
+                    return;
+                }
+
+                if (session === 1) {
+                    window.location.assign(window.ExperimentAPI.withParticipant("game-round2-transition.html"));
+                } else {
+                    window.location.assign(window.ExperimentAPI.withParticipant("game-complete.html"));
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

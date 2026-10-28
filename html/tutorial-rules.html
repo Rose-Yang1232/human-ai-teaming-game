@@ -1,0 +1,145 @@
+<div class="col-12">
+    <div class="flow-card">
+        <h3>Tutorial 1/2: Rules of the Target Interception Game</h3>
+        <p>
+            We are glad that you decided to join us in this study. Before starting the target interception game,
+            please read the following descriptions and rules carefully.
+        </p>
+
+        <div class="flow-placeholder tutorial-rules-scroll">
+            <p class="tutorial-rules-section-title"><strong>What is the target interception game about?</strong></p>
+            <p>
+                In this game, you will team up with an AI to catch moving targets inside a circular field.
+                The targets move in straight lines, but not all at the same speed: <strong>the more urgent a target is,
+                the faster it moves</strong> (see “scoring rules” below), so urgent targets cross the circle and leave it sooner.
+                Your job (as well as your AI teammate’s job) 
+                is simple: just pick a target to go after, and the game will automatically move you 
+                (or the AI) along the best path to catch it.
+
+            </p>
+            <p>
+                When a target is caught inside the circle, your team earns points no matter who catches it. 
+                In addition, the catcher may get extra bonus points (see “scoring rules” below), 
+                and need to pick the next target to go after. 
+
+            </p>
+            <p>
+                Targets will disappear if they leave the circle before being caught, 
+                and new ones can appear at any place or any time. Each game lasts for 1 minute.     
+
+            </p>
+
+            <p class="tutorial-rules-section-title"><strong>Scoring rules</strong></p>
+            <p>
+                Targets in the game vary by their <em>urgency</em> and <em>shape</em>, which leads to different points:
+            </p>
+            <ul>
+                <li>
+                    The <strong>urgency</strong> of a target is shown by <em>how much of it is filled in</em> -
+                    the more filled it is, the more urgent it is. There are three urgency levels, and each gives
+                    a different number of points to the <em>team (i.e., you + the AI)</em> when caught.
+                </li>
+                <li>
+                    More urgent targets also <strong>move faster</strong>: a Level 3 target moves about twice as fast
+                    as a Level 1 target. Fast targets are worth more points, but they leave the circle
+                    more quickly, so you have less time to catch them.
+                </li>
+            </ul>
+
+            <div class="table-responsive mb-3">
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th>Urgency level</th>
+                            <th>Example Target Icons</th>
+                            <th>Speed</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Level 1 (least urgent)</td>
+                            <td>
+                                <span class="urgency-icons-row">
+                                    <span class="urgency-icon urgency-shape-square urgency-1" aria-label="Level 1 square target"></span>
+                                    <span class="urgency-icon urgency-shape-circle urgency-1" aria-label="Level 1 circle target"></span>
+                                    <span class="urgency-icon urgency-shape-triangle urgency-1" aria-label="Level 1 triangle target"></span>
+                                </span>
+                            </td>
+                            <td>Slow</td>
+                            <td>+1 point for the team</td>
+                        </tr>
+                        <tr>
+                            <td>Level 2 (moderately urgent)</td>
+                            <td>
+                                <span class="urgency-icons-row">
+                                    <span class="urgency-icon urgency-shape-square urgency-2" aria-label="Level 2 square target"></span>
+                                    <span class="urgency-icon urgency-shape-circle urgency-2" aria-label="Level 2 circle target"></span>
+                                    <span class="urgency-icon urgency-shape-triangle urgency-2" aria-label="Level 2 triangle target"></span>
+                                </span>
+                            </td>
+                            <td>Medium</td>
+                            <td>+2 points for the team</td>
+                        </tr>
+                        <tr>
+                            <td>Level 3 (most urgent)</td>
+                            <td>
+                                <span class="urgency-icons-row">
+                                    <span class="urgency-icon urgency-shape-square urgency-3" aria-label="Level 3 square target"></span>
+                                    <span class="urgency-icon urgency-shape-circle urgency-3" aria-label="Level 3 circle target"></span>
+                                    <span class="urgency-icon urgency-shape-triangle urgency-3" aria-label="Level 3 triangle target"></span>
+                                </span>
+                            </td>
+                            <td>Fast</td>
+                            <td>+3 points for the team</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <ul>
+                <li>
+                    The <strong>shape</strong> of a target determines the bonus points for the person who catches it:
+                    <ul>
+                        <li>
+                            <em>You (the human player)</em> get <strong>an extra 3 bonus points</strong> for each
+                            <strong>square target</strong> you catch. You do not get bonus points for catching
+                            circle or triangle targets.
+                        </li>
+                        <li>
+                            <em>The AI</em> gets <strong>an extra 3 bonus points</strong> for each <strong>triangle target</strong>
+                            it catches. It does not get bonus points for catching circle or square targets.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p>
+                By the end of a target interception game:
+            </p>
+            <ul>
+                <li>
+                    Your final score is <strong>the team's points</strong> (from all targets caught by either you or the AI)
+                    <strong>plus your bonus points</strong> (from the square targets you catch).
+                </li>
+                <li>
+                    Your AI teammate's final score is <strong>the team's points</strong> (from all targets caught by either you or the AI)
+                    <strong>plus the AI's bonus points</strong> (from the triangle targets the AI catches).
+                </li>
+            </ul>
+
+            <p>
+                <p class="tutorial-rules-section-title"><strong>What is your goal in a game?</strong></p>
+
+                In each game, your goal is to work together with the AI and choose targets wisely to
+                <strong>get the highest score for yourself</strong> - this includes both the team's points
+                and your personal bonus points. Your final score in a game will be converted to your bonus
+                payments in this study using a <strong>100 points to $0.5 rate</strong>.
+            </p>
+        </div>
+
+        <div class="flow-btn-row">
+            <button id="tutorial-rules-next" class="btn btn-primary">Continue</button>
+        </div>
+    </div>
+</div>

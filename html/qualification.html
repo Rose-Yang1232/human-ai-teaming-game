@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qualification</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/onboarding-flow.css">
+    <style>
+        .site-header {
+            background-color: #0064a4;
+            color: #fff;
+            padding: 8px 0;
+        }
+        .site-header .title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        .brand-logo {
+            width: 70px;
+            height: 30px;
+            object-fit: contain;
+        }
+        .sub-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+        .qual-page {
+            color: #111827;
+        }
+        .qual-page .flow-card {
+            max-width: 980px;
+        }
+        .qual-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+        .q-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #d7e2ef;
+        }
+        .q-item:last-of-type {
+            border-bottom: 0;
+        }
+        .q-title {
+            margin: 0 0 8px;
+            font-weight: 700;
+        }
+        .q-options label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        .result-box {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: none;
+        }
+        .result-box.error {
+            display: block;
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            color: #9f1239;
+        }
+        .result-box.success {
+            display: block;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+        .answer-key-box {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #bfdbfe;
+            background: #eff6ff;
+            color: #1e3a8a;
+            display: none;
+        }
+        .answer-key-box.show {
+            display: block;
+        }
+        .answer-key-box ul {
+            margin: 8px 0 0;
+            padding-left: 18px;
+        }
+        .qual-actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body class="qual-page">
+    <header class="site-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-2"><img class="brand-logo" src="../images/purdue_logo.png" alt="Purdue logo"></div>
+                <div class="col-8"><h2 class="title">Qualification</h2></div>
+                <div class="col-2 text-right"><img class="brand-logo" src="../images/purdue_logo.png" alt="Purdue logo"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mt-3">
+        <div class="flow-card">
+            <div class="sub-header">Target Interception Game: Qualification</div>
+            <p class="qual-text">
+                Please answer the questions below to confirm your understanding of the game rules.
+                You can proceed only if all answers are correct.
+            </p>
+
+            <form id="qualification-form">
+                <div class="q-item">
+                    <p class="q-title">Q1. What determines how many points a caught target adds to the team score?</p>
+                    <div class="q-options">
+                        <label><input type="radio" name="q1" value="a"> Its shape (square/circle/triangle)</label>
+                        <label><input type="radio" name="q1" value="b"> Its urgency level</label>
+                        <label><input type="radio" name="q1" value="c"> Who catches it (human vs AI)</label>
+                    </div>
+                </div>
+
+                <div class="q-item">
+                    <p class="q-title">Q2. Which targets give you (the human) bonus points?</p>
+                    <div class="q-options">
+                        <label><input type="radio" name="q2" value="a"> Triangle targets</label>
+                        <label><input type="radio" name="q2" value="b"> Circle targets</label>
+                        <label><input type="radio" name="q2" value="c"> Square targets</label>
+                    </div>
+                </div>
+
+                <div class="q-item">
+                    <p class="q-title">Q3. Which targets give the AI teammate bonus points?</p>
+                    <div class="q-options">
+                        <label><input type="radio" name="q3" value="a"> Triangle targets</label>
+                        <label><input type="radio" name="q3" value="b"> Square targets</label>
+                        <label><input type="radio" name="q3" value="c"> Circle targets</label>
+                    </div>
+                </div>
+
+                <div class="q-item">
+                    <p class="q-title">Q4. Your final score in a game is:</p>
+                    <div class="q-options">
+                        <label><input type="radio" name="q4" value="a"> Only your bonus score</label>
+                        <label><input type="radio" name="q4" value="b"> Team score + your bonus score</label>
+                        <label><input type="radio" name="q4" value="c"> Team score only</label>
+                    </div>
+                </div>
+
+                <div class="q-item">
+                    <p class="q-title">Q5. If you pause the game, what happens?</p>
+                    <div class="q-options">
+                        <label><input type="radio" name="q5" value="a"> You can reselect your target and confirm it</label>
+                        <label><input type="radio" name="q5" value="b"> The game ends immediately</label>
+                        <label><input type="radio" name="q5" value="c"> The AI chooses all future targets</label>
+                    </div>
+                </div>
+
+                <div class="q-item">
+                    <p class="q-title">Q6. Suppose a Level-1 triangle and a Level-3 circle are both reachable. Which one adds more to the AI's final score?</p>
+                    <div class="q-options">
+                        <label><input type="radio" name="q6" value="a"> <span class="urgency-icon urgency-shape-circle urgency-3" aria-hidden="true"></span> The Level-3 circle</label>
+                        <label><input type="radio" name="q6" value="b"> <span class="urgency-icon urgency-shape-triangle urgency-1" aria-hidden="true"></span> The Level-1 triangle</label>
+                        <label><input type="radio" name="q6" value="c"> They add the same</label>
+                    </div>
+                </div>
+
+                <div class="q-item">
+                    <p class="q-title">Q7. Suppose a Level-1 square and a Level-3 triangle are both reachable. Which one adds more to your final score?</p>
+                    <div class="q-options">
+                        <label><input type="radio" name="q7" value="a"> <span class="urgency-icon urgency-shape-square urgency-1" aria-hidden="true"></span> The Level-1 square</label>
+                        <label><input type="radio" name="q7" value="b"> <span class="urgency-icon urgency-shape-triangle urgency-3" aria-hidden="true"></span> The Level-3 triangle</label>
+                        <label><input type="radio" name="q7" value="c"> They add the same</label>
+                    </div>
+                </div>
+
+                <div id="qualification-result" class="result-box"></div>
+                <div id="qualification-answer-key" class="answer-key-box"></div>
+
+                <div class="qual-actions">
+                    <button type="button" id="check-answers" class="btn btn-outline-primary">Check answers</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="../js/api-client.js"></script>
+    <script>
+        (function () {
+            const answerKey = {
+                q1: 'b',
+                q2: 'c',
+                q3: 'a',
+                q4: 'b',
+                q5: 'a',
+                q6: 'b',
+                q7: 'a'
+            };
+
+            const checkBtn = document.getElementById('check-answers');
+            const resultBox = document.getElementById('qualification-result');
+            const answerKeyBox = document.getElementById('qualification-answer-key');
+            const answerLabel = {
+                q1: 'Its urgency level',
+                q2: 'Square targets',
+                q3: 'Triangle targets',
+                q4: 'Team score + your bonus score',
+                q5: 'You can reselect your target and confirm it',
+                q6: 'The Level-1 triangle',
+                q7: 'The Level-1 square'
+            };
+
+            const pageOpenedAt = Date.now();
+            let attempt = 0;
+            // Every click on "Check answers" is one attempt, including incomplete
+            // ones. The server keeps the full answer set so failures can be analyzed.
+            const logAttempt = (outcome, answers, missing, incorrect) => {
+                if (!window.ExperimentAPI) return Promise.resolve(null);
+                return window.ExperimentAPI.logStudyEvent('qualification_attempt', {
+                    attempt, outcome, answers,
+                    missing: missing.map(q => q.toLowerCase()),
+                    incorrect: incorrect.map(q => q.toLowerCase()),
+                    elapsedMs: Date.now() - pageOpenedAt
+                });
+            };
+
+            const evaluateAnswers = async () => {
+                const missing = [];
+                const incorrect = [];
+                const answers = {};
+                attempt += 1;
+                Object.keys(answerKey).forEach((q) => {
+                    const selected = document.querySelector("input[name='" + q + "']:checked");
+                    answers[q] = selected ? selected.value : null;
+                    if (!selected) {
+                        missing.push(q.toUpperCase());
+                        return;
+                    }
+                    if (selected.value !== answerKey[q]) {
+                        incorrect.push(q.toUpperCase());
+                    }
+                });
+                const outcome = missing.length ? 'incomplete' : (incorrect.length ? 'failed' : 'passed');
+
+                if (outcome !== 'passed') logAttempt(outcome, answers, missing, incorrect);
+
+                if (missing.length > 0) {
+                    resultBox.className = 'result-box error';
+                    resultBox.textContent = 'Please answer all questions before checking.';
+                    answerKeyBox.className = 'answer-key-box';
+                    answerKeyBox.innerHTML = '';
+                    return;
+                }
+
+                if (incorrect.length > 0) {
+                    resultBox.className = 'result-box error';
+                    resultBox.textContent = 'Some of your answers are incorrect. You need to get all answers correct in order to proceed. Please try again.';
+                    answerKeyBox.className = 'answer-key-box';
+                    answerKeyBox.innerHTML = '';
+                    document.querySelectorAll("#qualification-form input[type='radio']:checked").forEach((el) => {
+                        el.checked = false;
+                    });
+                    return;
+                }
+
+                resultBox.className = 'result-box success';
+                resultBox.textContent = 'Great! All answers are correct. Redirecting...';
+                answerKeyBox.className = 'answer-key-box';
+                answerKeyBox.innerHTML = '';
+                checkBtn.disabled = true;
+                // Wait for the passing record (it retries once) before leaving.
+                await Promise.all([
+                    logAttempt(outcome, answers, missing, incorrect),
+                    new Promise(r => window.setTimeout(r, 350))
+                ]);
+                window.location.assign(window.ExperimentAPI
+                    ? window.ExperimentAPI.withParticipant('qualification-passed.html')
+                    : 'qualification-passed.html');
+            };
+
+            checkBtn.addEventListener('click', evaluateAnswers);
+        })();
+    </script>
+</body>
+</html>

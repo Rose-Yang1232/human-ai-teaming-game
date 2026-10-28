@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Summary</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/onboarding-flow.css">
+    <style>
+        .site-header {
+            background-color: #0064a4;
+            padding: 8px 0;
+            color: #fff;
+        }
+        .site-header .title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        .brand-logo {
+            width: 70px;
+            height: 30px;
+            object-fit: contain;
+        }
+        .summary-page {
+            color: #060005;
+        }
+        .summary-page .flow-card {
+            max-width: 1100px;
+        }
+        .summary-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+        .summary-lead {
+            font-size: 1.25rem;
+            margin-bottom: 18px;
+            line-height: 1.45;
+        }
+        .summary-metrics {
+            font-size: 1.6rem;
+            font-weight: 800;
+            line-height: 1.45;
+            margin-bottom: 24px;
+        }
+        .summary-section {
+            font-size: 1.9rem;
+            font-weight: 800;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+        .summary-sub {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 1.15rem;
+        }
+        .summary-table td, .summary-table th {
+            border: 1px solid #111;
+            padding: 10px;
+            vertical-align: top;
+            font-weight: 400;
+        }
+        .summary-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+        .summary-icon-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .target-icon {
+            --fill-scale: 0.6;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: rgba(97, 87, 87, 0.51);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            position: relative;
+            vertical-align: middle;
+        }
+        .target-icon::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 70%;
+            height: 70%;
+            transform: translate(-50%, -50%) scale(var(--fill-scale));
+            background: orange;
+        }
+        .target-square { border-radius: 3px; }
+        .target-square::after { border-radius: 2px; }
+        .target-circle { border-radius: 50%; }
+        .target-circle::after { border-radius: 50%; }
+        .target-triangle {
+            border-radius: 0;
+            clip-path: polygon(50% 6%, 6% 94%, 94% 94%);
+        }
+        .target-triangle::after {
+            border-radius: 0;
+            clip-path: polygon(50% 6%, 6% 94%, 94% 94%);
+        }
+        .urgency-1 { --fill-scale: 0.36; }
+        .urgency-2 { --fill-scale: 0.6; }
+        .urgency-3 { --fill-scale: 0.84; }
+    </style>
+</head>
+<body class="summary-page">
+    <header class="site-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-2"><img class="brand-logo" src="../images/purdue_logo.png" alt="Purdue logo"></div>
+                <div class="col-8"><h2 class="title">Target Intercept Game</h2></div>
+                <div class="col-2 text-right"><img class="brand-logo" src="../images/purdue_logo.png" alt="Purdue logo"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mt-3">
+        <div class="flow-card">
+            <div class="summary-title" id="summary-title">Target Interception Game: Round 2 Summary</div>
+            <p class="summary-lead" id="summary-lead">
+                Congratulations! You've just finished your second target interception game. Below is a quick summary
+                of your and your AI teammate's performance in this second game.
+            </p>
+
+            <div class="summary-metrics">
+                <div>Team's score: <span id="teamScore">0</span></div>
+                <div>Your bonus score: <span id="humanBonus">0</span></div>
+                <div>Your AI teammate's bonus score: <span id="aiBonus">0</span></div>
+            </div>
+
+            <div class="summary-section">Detailed breakdown of your performance:</div>
+            <div class="summary-sub">(for different types of targets, how many you selected as your target, and how many you successfully caught)</div>
+            <table class="summary-table">
+                <tr>
+                    <td><span class="summary-label"><span class="target-icon target-square urgency-1"></span>Level-1 Square:</span><br><span id="human-1-square">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-square urgency-2"></span>Level-2 Square:</span><br><span id="human-2-square">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-square urgency-3"></span>Level-3 Square:</span><br><span id="human-3-square">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-square urgency-1"></span><span class="target-icon target-square urgency-2"></span><span class="target-icon target-square urgency-3"></span></span>Square:</span><br><span id="human-square">(0 selected, 0 caught)</span></td>
+                </tr>
+                <tr>
+                    <td><span class="summary-label"><span class="target-icon target-circle urgency-1"></span>Level-1 Circle:</span><br><span id="human-1-circle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-circle urgency-2"></span>Level-2 Circle:</span><br><span id="human-2-circle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-circle urgency-3"></span>Level-3 Circle:</span><br><span id="human-3-circle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-circle urgency-1"></span><span class="target-icon target-circle urgency-2"></span><span class="target-icon target-circle urgency-3"></span></span>Circle:</span><br><span id="human-circle">(0 selected, 0 caught)</span></td>
+                </tr>
+                <tr>
+                    <td><span class="summary-label"><span class="target-icon target-triangle urgency-1"></span>Level-1 Triangle:</span><br><span id="human-1-triangle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-triangle urgency-2"></span>Level-2 Triangle:</span><br><span id="human-2-triangle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-triangle urgency-3"></span>Level-3 Triangle:</span><br><span id="human-3-triangle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-triangle urgency-1"></span><span class="target-icon target-triangle urgency-2"></span><span class="target-icon target-triangle urgency-3"></span></span>Triangle:</span><br><span id="human-triangle">(0 selected, 0 caught)</span></td>
+                </tr>
+                <tr>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-square urgency-1"></span><span class="target-icon target-circle urgency-1"></span><span class="target-icon target-triangle urgency-1"></span></span>Level-1:</span><br><span id="human-level-1">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-square urgency-2"></span><span class="target-icon target-circle urgency-2"></span><span class="target-icon target-triangle urgency-2"></span></span>Level-2:</span><br><span id="human-level-2">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-square urgency-3"></span><span class="target-icon target-circle urgency-3"></span><span class="target-icon target-triangle urgency-3"></span></span>Level-3:</span><br><span id="human-level-3">(0 selected, 0 caught)</span></td>
+                    <td>Your final score:<br><span id="humanFinal">0</span></td>
+                </tr>
+            </table>
+
+            <div class="summary-section">Detailed breakdown of your AI teammate's performance:</div>
+            <div class="summary-sub">(for different types of targets, how many the AI selected as its target, and how many it successfully caught)</div>
+            <table class="summary-table">
+                <tr>
+                    <td><span class="summary-label"><span class="target-icon target-square urgency-1"></span>Level-1 Square:</span><br><span id="ai-1-square">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-square urgency-2"></span>Level-2 Square:</span><br><span id="ai-2-square">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-square urgency-3"></span>Level-3 Square:</span><br><span id="ai-3-square">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-square urgency-1"></span><span class="target-icon target-square urgency-2"></span><span class="target-icon target-square urgency-3"></span></span>Square:</span><br><span id="ai-square">(0 selected, 0 caught)</span></td>
+                </tr>
+                <tr>
+                    <td><span class="summary-label"><span class="target-icon target-circle urgency-1"></span>Level-1 Circle:</span><br><span id="ai-1-circle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-circle urgency-2"></span>Level-2 Circle:</span><br><span id="ai-2-circle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-circle urgency-3"></span>Level-3 Circle:</span><br><span id="ai-3-circle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-circle urgency-1"></span><span class="target-icon target-circle urgency-2"></span><span class="target-icon target-circle urgency-3"></span></span>Circle:</span><br><span id="ai-circle">(0 selected, 0 caught)</span></td>
+                </tr>
+                <tr>
+                    <td><span class="summary-label"><span class="target-icon target-triangle urgency-1"></span>Level-1 Triangle:</span><br><span id="ai-1-triangle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-triangle urgency-2"></span>Level-2 Triangle:</span><br><span id="ai-2-triangle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="target-icon target-triangle urgency-3"></span>Level-3 Triangle:</span><br><span id="ai-3-triangle">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-triangle urgency-1"></span><span class="target-icon target-triangle urgency-2"></span><span class="target-icon target-triangle urgency-3"></span></span>Triangle:</span><br><span id="ai-triangle">(0 selected, 0 caught)</span></td>
+                </tr>
+                <tr>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-square urgency-1"></span><span class="target-icon target-circle urgency-1"></span><span class="target-icon target-triangle urgency-1"></span></span>Level-1:</span><br><span id="ai-level-1">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-square urgency-2"></span><span class="target-icon target-circle urgency-2"></span><span class="target-icon target-triangle urgency-2"></span></span>Level-2:</span><br><span id="ai-level-2">(0 selected, 0 caught)</span></td>
+                    <td><span class="summary-label"><span class="summary-icon-row"><span class="target-icon target-square urgency-3"></span><span class="target-icon target-circle urgency-3"></span><span class="target-icon target-triangle urgency-3"></span></span>Level-3:</span><br><span id="ai-level-3">(0 selected, 0 caught)</span></td>
+                    <td>The AI's final score:<br><span id="aiFinal">0</span></td>
+                </tr>
+            </table>
+
+            <p class="summary-lead" id="summary-footer">
+                When you finish reviewing your and your AI teammate's performance in the second game and are ready for the post-study survey, click the button below to proceed.
+            </p>
+
+            <div class="flow-btn-row">
+                <a id="summary-next" class="btn btn-primary btn-lg" href="post-survey-game.html?session=2">Proceed</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/api-client.js"></script>
+    <script>
+        (function () {
+            let summary = null;
+            try {
+                summary = JSON.parse(window.sessionStorage.getItem('lastGameSummary') || 'null');
+            } catch (_e) {
+                summary = null;
+            }
+
+            const setPair = (id, selected, caught) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.textContent = `(${selected} selected, ${caught} caught)`;
+            };
+
+            const fillActor = (prefix, stats) => {
+                if (!stats) return;
+                ['square', 'circle', 'triangle'].forEach((shape) => {
+                    [1, 2, 3].forEach((level) => {
+                        const cell = stats.byLevelShape && stats.byLevelShape[`${level}-${shape}`];
+                        setPair(`${prefix}-${level}-${shape}`, cell?.selected ?? 0, cell?.caught ?? 0);
+                    });
+                    const shapeTotal = stats.shapeTotals && stats.shapeTotals[shape];
+                    setPair(`${prefix}-${shape}`, shapeTotal?.selected ?? 0, shapeTotal?.caught ?? 0);
+                });
+                [1, 2, 3].forEach((level) => {
+                    const levelTotal = stats.levelTotals && stats.levelTotals[level];
+                    setPair(`${prefix}-level-${level}`, levelTotal?.selected ?? 0, levelTotal?.caught ?? 0);
+                });
+            };
+
+            if (summary) {
+                document.getElementById('teamScore').textContent = summary.teamScore ?? 0;
+                document.getElementById('humanBonus').textContent = summary.humanBonus ?? 0;
+                document.getElementById('aiBonus').textContent = summary.aiBonus ?? 0;
+                document.getElementById('humanFinal').textContent =
+                    summary.humanFinal ?? (Number(summary.teamScore || 0) + Number(summary.humanBonus || 0));
+                document.getElementById('aiFinal').textContent =
+                    summary.aiFinal ?? (Number(summary.teamScore || 0) + Number(summary.aiBonus || 0));
+                fillActor('human', summary.human);
+                fillActor('ai', summary.ai);
+            }
+        })();
+    </script>
+</body>
+</html>

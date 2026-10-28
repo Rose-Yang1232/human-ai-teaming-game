@@ -1,0 +1,311 @@
+/*
+survey.css
+
+    Author      :   Sheer Karny, Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Survey styling file.
+*/
+
+/* General Styles */
+#survey-full-container {
+  max-width: 100%;
+  padding: 20px;
+}
+
+/* Survey Question Styles */
+#survey-question-container {
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #0064a4;
+}
+
+#survey-task {
+  text-align: left;
+}
+
+/* Likert Scale Styles */
+#survey-likert-table-container {
+  margin-bottom: 4rem;
+}
+
+#survey-likert-legend-header-container {
+  margin-top: 2rem;
+  border-bottom: 2px solid #0064a4;
+}
+
+.survey-likert-topic-header {
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 1.25em;
+  border-right: 2px solid #0064a4;
+}
+
+.survey-likert-legend-container {
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.survey-likert-legend-header {
+  margin-bottom: 50px;
+}
+
+.likert-legend {
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.likert-legend li {
+  display: inline-block;
+  width: 5.5%;
+  text-align: center;
+}
+
+.likert-legend li label {
+  width: 100%;
+  font-size: 1.25em;
+}
+
+.survey-likert-topic-container {
+  height: 250px;
+  border-bottom: 2px solid #0064a4;
+}
+
+.likert-topic-full {
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.likert-topic-full:last-of-type {
+  border-bottom: 0;
+}
+
+.likert-topic-full li {
+  display: inline-block;
+  width: 5.5%;
+  text-align: center;
+  vertical-align: top;
+}
+
+/* Table Styles */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.table thead tr:last-child th {
+  background-color: #f8f9fa !important;
+  font-weight: bold;
+}
+
+.table tbody td:nth-child(n+2):nth-child(-n+8) {
+  background-color: #f0f8ff;
+}
+
+.table tbody td:nth-child(n+9):nth-child(-n+15) {
+  background-color: #fff0f5;
+}
+
+.table tbody td:first-child {
+  background-color: #ffffff;
+}
+
+.table td:nth-child(8) {
+  border-right: 3px solid #333;
+}
+
+.topic-header, .topic {
+  position: sticky;
+  left: 0;
+  background-color: #f8f9fa;
+  z-index: 1;
+}
+
+.topic-header {
+  top: 0;
+  z-index: 2;
+}
+
+.radio-group {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.radio-group input[type="radio"] {
+  margin: 0;
+}
+
+.table td {
+  transition: background-color 0.3s ease;
+}
+
+.table td:hover {
+  opacity: 0.8;
+}
+
+/* Robot Icon Styles */
+.robot-green {
+  background-color: rgba(0, 128, 0, 0.5);
+}
+
+.robot-purple {
+  background-color: rgba(128, 0, 128, 0.5);
+}
+
+.robot-blue {
+  background-color: rgba(0, 0, 255, 0.5);
+}
+
+.robot-copper {
+  background-color: rgba(184, 115, 51, 0.5);
+}
+
+/* Submit Button Styles */
+#survey-complete-button-full {
+  width: 100%;
+  font-size: 1.25em;
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+}
+
+/* Scale Description Styles */
+.scale-description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.scale-left, .scale-right {
+  padding: 0 15px;
+}
+
+.scale-description::before,
+.scale-description::after {
+  content: "";
+  height: 2px;
+  background-color: #000;
+  flex-grow: 1;
+  margin: 0 10px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .table {
+      font-size: 14px;
+  }
+  
+  .radio-group input[type="radio"] {
+      width: 20px;
+      height: 20px;
+  }
+
+  .scale-description {
+      flex-direction: column;
+  }
+  
+  .scale-description::before,
+  .scale-description::after {
+      width: 50%;
+      margin: 5px 0;
+  }
+}
+
+/* Add these styles to your existing CSS file */
+
+.likert-legend-simple {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px 0;
+  font-size: 1.2em;
+}
+
+.legend-left, .legend-right {
+  flex: 0 0 auto;
+  padding: 0 10px;
+  font-weight: bold;
+}
+
+.legend-scale {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  padding: 0 20px;
+}
+
+.legend-scale span {
+  font-weight: bold;
+}
+
+/* Adjust existing styles if needed */
+#survey-question-container {
+  padding-bottom: 0.5rem;
+}
+
+#survey-likert-table-container {
+  margin-top: 1rem;
+}
+
+.separator-column {
+  width: 20px;
+  background-color: #f8f9fa;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+}
+/* Add these styles to your existing CSS file */
+
+.likert-description-row th {
+  font-weight: normal;
+  font-style: italic;
+  font-size: 0.9em;
+  text-align: center;
+  padding: 5px;
+  background-color: #f8f9fa;
+}
+
+/* Adjust the existing styles if needed */
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.robot-figure {
+  margin-bottom: 0;
+}
+
+.robot-figure figcaption {
+  margin-bottom: 2px;
+}
+
+/* Ensure the separator column styling is consistent */
+.separator-column {
+  width: 20px;
+  background-color: #f8f9fa;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+}
